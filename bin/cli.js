@@ -2,6 +2,7 @@
 
 import { execSync } from "child_process";
 import path from "path";
+import { rmdirSync } from "fs";
 
 const runCommand = (command) => {
   try {
@@ -51,6 +52,17 @@ const main = () => {
     "Hurray! Dependencies are installed successfully. Follow the command below to start the project:"
   );
   console.log(`cd ${projectName} && npm start`);
+
+  // Add a listener for the 'exit' event to remove the bin folder
+  process.on("exit", () => {
+    const binFolderPath = path.join(projectDir, "bin");
+    try {
+      rmdirSync(binFolderPath, { recursive: true });
+      console.log("The bin folder is removed successfully.");
+    } catch (e) {
+      console.error("Failed to remove the bin folder.", e);
+    }
+  });
 };
 
 main();
