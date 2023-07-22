@@ -56,9 +56,10 @@ const main = () => {
   // Add a listener for the 'exit' event to remove the bin folder
   process.on("exit", () => {
     const binFolderPath = path.join(projectDir, "bin");
+    const gitFolderPath = path.join(projectDir, ".git");
     try {
       rmdirSync(binFolderPath, { recursive: true });
-      console.log("The bin folder is removed successfully.");
+      rmdirSync(gitFolderPath, { recursive: true });
     } catch (e) {
       console.error("Failed to remove the bin folder.", e);
     }
